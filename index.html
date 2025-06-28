@@ -1183,22 +1183,73 @@
         
         // 通知スケジュール
         function scheduleNotifications() {
+            // 既に通知が設定されているかチェック
+            const lastScheduled = localStorage.getItem('notificationScheduled');
             const now = new Date();
-            const tomorrow19 = new Date(now);
-            tomorrow19.setDate(tomorrow19.getDate() + 1);
-            tomorrow19.setHours(19, 0, 0, 0);
             
-            const timeUntilNotification = tomorrow19.getTime() - now.getTime();
-            
-            if (timeUntilNotification > 0) {
-                setTimeout(() => {
-                    new Notification('🚀 投稿リマインダー', {
-                        body: '今日の業務ログから投稿を作成しませんか？',
-                        icon: '/favicon.ico',
-                        badge: '/favicon.ico'
-                    });
-                }, timeUntilNotification);
+            if (lastScheduled) {
+                const lastDate = new Date(lastScheduled);
+                const timeDiff = now.getTime() - lastDate.getTime();
+                // 24時間以内に設定済みなら重複設定を避ける
+                if (timeDiff < 24 * 60 * 60 * 1000) {
+                    showSuccess('✅ 通知は既に設定済みです');
+                    return;
+                }
             }
+            
+            // 複数の時間に通知を設定
+            const notificationTimes = [
+                { hour: 9, minute: 0, message: '☀️ おはようございます！今日も業務ログの記録を始めませんか？' },
+                { hour: 19, minute: 0, message: '🚀 お疲れ様！今日の業務ログから投稿を作成しませんか？' },
+                { hour: 21, minute: 0, message: '🌙 一日の振り返りを投稿にまとめてみませんか？' }
+            ];
+            
+            notificationTimes.forEach((timeConfig, index) => {
+                const targetTime = new Date(now);
+                targetTime.setDate(targetTime.getDate() + 1); // 明日
+                targetTime.setHours(timeConfig.hour, timeConfig.minute, 0, 0);
+                
+                const timeUntilNotification = targetTime.getTime() - now.getTime();
+                
+                if (timeUntilNotification > 0) {
+                    setTimeout(() => {
+                        if (Notification.permission === 'granted') {
+                            try {
+                                new Notification('📝 AI投稿管理システム', {
+                                    body: timeConfig.message,
+                                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📝</text></svg>',
+                                    tag: `reminder-${index}`,
+                                    requireInteraction: false,
+                                    actions: [
+                                        {
+                                            action: 'open',
+                                            title: '開く'
+                                        },
+                                        {
+                                            action: 'later',
+                                            title: '後で'
+                                        }
+                                    ]
+                                });
+                            } catch (error) {
+                                console.error('通知送信エラー:', error);
+                            }
+                        }
+                    }, timeUntilNotification);
+                }
+            });
+            
+            localStorage.setItem('notificationScheduled', now.toISOString());
+            showSuccess('🔔 複数の時間帯に通知を設定しました！');
+        }
+        
+        // 通知クリック時の処理
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data.action === 'open') {
+                    window.focus();
+                }
+            });
         }
         
         // 生成状態管理
