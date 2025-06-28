@@ -642,7 +642,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <a href="https://github.com/yourusername/ai-tweet-generator" class="github-link" target="_blank">
+            <a href="https://github.com/tomoyama1205/ai-tweet-generator" class="github-link" target="_blank">
                 🔗 GitHub
             </a>
             <h1>🚀 AI投稿管理システム</h1>
@@ -793,3 +793,676 @@
                     <p style="color: #657786; margin-bottom: 25px;">エンジニア界隈で反応が良い時間帯をピックアップ</p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+                        <div class="schedule-item" data-time="weekday-morning">
+                            <h4>平日朝 🌅</h4>
+                            <p>7:00-9:00</p>
+                            <small>通勤時間の学習タイム</small>
+                        </div>
+                        <div class="schedule-item" data-time="weekday-lunch">
+                            <h4>平日昼 🍽️</h4>
+                            <p>12:00-13:00</p>
+                            <small>ランチタイムの息抜き</small>
+                        </div>
+                        <div class="schedule-item" data-time="weekday-evening">
+                            <h4>平日夜 🌃</h4>
+                            <p>19:00-21:00</p>
+                            <small>最も活発な時間帯</small>
+                        </div>
+                        <div class="schedule-item" data-time="weekend-morning">
+                            <h4>週末朝 ☀️</h4>
+                            <p>10:00-12:00</p>
+                            <small>技術学習の時間</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #e8f4fd, #bee5eb); border-left: 5px solid #1DA1F2; padding: 25px; border-radius: 15px;">
+                    <h3 style="color: #1DA1F2; margin-bottom: 15px;">📱 投稿リマインダー</h3>
+                    <p style="color: #555; margin-bottom: 20px;">ブラウザ通知で投稿タイミングをお知らせします</p>
+                    <button class="btn" onclick="enableNotifications()">🔔 通知を有効にする</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分析タブ -->
+        <div id="analytics" class="tab-content">
+            <div class="section">
+                <h2>📊 投稿分析</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalDrafts">0</div>
+                        <div class="stat-label">総下書き数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="readyDrafts">0</div>
+                        <div class="stat-label">投稿準備完了</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="postedCount">0</div>
+                        <div class="stat-label">投稿済み</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="streakDays">0</div>
+                        <div class="stat-label">連続投稿日数</div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; border-radius: 20px; border: 2px solid #e1e8ed;">
+                    <h3 style="margin-bottom: 20px; color: #333;">📈 投稿パフォーマンス向上のコツ</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #28a745;">
+                            <h4 style="color: #28a745; margin-bottom: 10px;">🎯 一貫性</h4>
+                            <p style="color: #555; font-size: 14px;">毎日同じ時間帯に投稿して読者に習慣化してもらう</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #1DA1F2;">
+                            <h4 style="color: #1DA1F2; margin-bottom: 10px;">💡 価値提供</h4>
+                            <p style="color: #555; font-size: 14px;">学びや解決策を共有して読者にとって有益な投稿を心がける</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #ffa500;">
+                            <h4 style="color: #ffa500; margin-bottom: 10px;">🤝 交流促進</h4>
+                            <p style="color: #555; font-size: 14px;">質問で終わって読者との対話を誘発する</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #e74c3c;">
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">✨ 視覚的魅力</h4>
+                            <p style="color: #555; font-size: 14px;">適切な絵文字で親しみやすさと読みやすさを向上</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>
+                🚀 <strong>AI投稿管理システム</strong> - エンジニアの発信を効率化<br>
+                作成者: <a href="https://twitter.com/yourhandle" target="_blank">@yourhandle</a> | 
+                <a href="https://github.com/tomoyama1205/ai-tweet-generator" target="_blank">GitHub</a> | 
+                <a href="mailto:tomoyama1205@gmail.com">お問い合わせ</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                このツールがお役に立ったら、ぜひXでシェアしてください！ #AI投稿管理システム
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let selectedModel = 'gpt-3.5-turbo';
+        let drafts = JSON.parse(localStorage.getItem('drafts') || '[]');
+        let isGenerating = false;
+        
+        // タブ切り替え
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById(tabName).classList.add('fade-in');
+            
+            if (tabName === 'drafts') {
+                loadDrafts();
+            } else if (tabName === 'analytics') {
+                updateAnalytics();
+            }
+        }
+        
+        // モデル選択
+        document.querySelectorAll('.model-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.model-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedModel = option.dataset.model;
+                
+                const costInfo = option.querySelector('.cost-info');
+                showSuccess(`${option.querySelector('h4').textContent}を選択しました（${costInfo.textContent}）`);
+            });
+        });
+        
+        // 生成して下書き保存
+        async function generateAndSave() {
+            const content = await generateContent();
+            if (content) {
+                saveDraft(content);
+                showSuccess('✅ 下書きを保存しました！下書き管理タブで確認できます。');
+                document.getElementById('workLog').value = '';
+            }
+        }
+        
+        // プレビューのみ
+        async function generatePreview() {
+            const content = await generateContent();
+            if (content) {
+                displayPreview(content);
+            }
+        }
+        
+        // 即座に投稿準備
+        async function quickPost() {
+            const content = await generateContent();
+            if (content) {
+                copyToClipboard(content.text);
+                saveDraft({...content, status: 'ready'});
+                showSuccess('🎉 投稿文をクリップボードにコピーしました！Xのページで貼り付けて投稿してください。');
+                document.getElementById('workLog').value = '';
+            }
+        }
+        
+        // コンテンツ生成
+        async function generateContent() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const workLog = document.getElementById('workLog').value.trim();
+            
+            if (!apiKey) {
+                showError('❌ OpenAI API Keyを入力してください。初回利用案内をご確認ください。');
+                return null;
+            }
+            
+            if (!workLog) {
+                showError('❌ 業務ログを入力してください。どんな作業をしたか、何を感じたかを書いてみてください。');
+                return null;
+            }
+            
+            if (isGenerating) {
+                showError('⏳ 既に生成中です。しばらくお待ちください。');
+                return null;
+            }
+            
+            try {
+                setGeneratingState(true);
+                const prompt = buildPrompt(workLog);
+                const response = await callOpenAI(apiKey, prompt);
+                
+                if (response.success) {
+                    return {
+                        text: response.content,
+                        originalLog: workLog,
+                        mood: document.getElementById('mood').value,
+                        postType: document.getElementById('postType').value,
+                        createdAt: new Date().toISOString(),
+                        status: 'draft'
+                    };
+                } else {
+                    showError('❌ ' + response.error);
+                    return null;
+                }
+            } catch (error) {
+                showError('❌ 生成中にエラーが発生しました: ' + error.message);
+                return null;
+            } finally {
+                setGeneratingState(false);
+            }
+        }
+        
+        // 下書き保存
+        function saveDraft(content) {
+            const draft = {
+                id: Date.now(),
+                ...content
+            };
+            
+            drafts.unshift(draft);
+            localStorage.setItem('drafts', JSON.stringify(drafts));
+        }
+        
+        // 下書き読み込み
+        function loadDrafts() {
+            drafts = JSON.parse(localStorage.getItem('drafts') || '[]');
+            const draftsList = document.getElementById('draftsList');
+            const draftCount = document.getElementById('draftCount');
+            
+            draftCount.textContent = drafts.length;
+            
+            if (drafts.length === 0) {
+                draftsList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>📝 下書きがありません</h3>
+                        <p>投稿生成タブで新しい下書きを作成してください<br>
+                        業務ログを入力して「生成して下書き保存」ボタンを押すだけです！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            draftsList.innerHTML = drafts.map(draft => `
+                <div class="draft-item">
+                    <div class="draft-header">
+                        <div class="draft-date">📅 ${formatDate(draft.createdAt)}</div>
+                        <div class="draft-status ${draft.status || 'draft'}">${getStatusLabel(draft.status)}</div>
+                    </div>
+                    <div class="draft-content">${draft.text}</div>
+                    <div class="draft-meta">
+                        <span>💭 ${getMoodLabel(draft.mood)} | 📋 ${getTypeLabel(draft.postType)}</span>
+                        <span>${draft.text.length}/280文字 ${draft.text.length > 280 ? '⚠️' : '✅'}</span>
+                    </div>
+                    <div class="draft-actions">
+                        <button class="btn" onclick="copyToClipboard('${draft.text.replace(/'/g, "\\'")}')">📋 コピー</button>
+                        <button class="btn secondary" onclick="editDraft(${draft.id})">✏️ 編集</button>
+                        <button class="btn success" onclick="markAsPosted(${draft.id})">✅ 投稿済み</button>
+                        <button class="btn danger" onclick="deleteDraft(${draft.id})">🗑️ 削除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // プレビュー表示
+        function displayPreview(content) {
+            const previewArea = document.getElementById('previewArea');
+            const previewContent = document.getElementById('previewContent');
+            
+            previewContent.innerHTML = `
+                <div class="draft-item" style="border-color: #1DA1F2; background: linear-gradient(135deg, #f0f8ff, #e8f4fd);">
+                    <div class="draft-header">
+                        <div class="draft-date">👀 プレビュー</div>
+                        <div class="draft-status ready">確認中</div>
+                    </div>
+                    <div class="draft-content">${content.text}</div>
+                    <div class="draft-meta">
+                        <span>💭 ${getMoodLabel(content.mood)} | 📋 ${getTypeLabel(content.postType)}</span>
+                        <span>${content.text.length}/280文字 ${content.text.length > 280 ? '⚠️ 長すぎます' : '✅ 適切'}</span>
+                    </div>
+                    <div class="draft-actions">
+                        <button class="btn" onclick="copyToClipboard('${content.text.replace(/'/g, "\\'")}')">📋 コピー</button>
+                        <button class="btn success" onclick="saveDraftFromPreview(${JSON.stringify(content).replace(/"/g, '&quot;')})">💾 下書き保存</button>
+                        <button class="btn secondary" onclick="hidePreview()">❌ 閉じる</button>
+                    </div>
+                </div>
+            `;
+            
+            previewArea.style.display = 'block';
+            previewArea.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // プレビューから下書き保存
+        function saveDraftFromPreview(content) {
+            saveDraft(content);
+            hidePreview();
+            showSuccess('✅ 下書きを保存しました！');
+        }
+        
+        // プレビュー非表示
+        function hidePreview() {
+            document.getElementById('previewArea').style.display = 'none';
+        }
+        
+        // 下書き削除
+        function deleteDraft(id) {
+            if (confirm('この下書きを削除しますか？')) {
+                drafts = drafts.filter(draft => draft.id !== id);
+                localStorage.setItem('drafts', JSON.stringify(drafts));
+                loadDrafts();
+                showSuccess('🗑️ 下書きを削除しました');
+            }
+        }
+        
+        // 投稿済みマーク
+        function markAsPosted(id) {
+            drafts = drafts.map(draft => 
+                draft.id === id ? {...draft, status: 'posted', postedAt: new Date().toISOString()} : draft
+            );
+            localStorage.setItem('drafts', JSON.stringify(drafts));
+            loadDrafts();
+            showSuccess('🎉 投稿済みとしてマークしました！お疲れ様でした！');
+        }
+        
+        // 全下書き削除
+        function clearAllDrafts() {
+            if (confirm('⚠️ すべての下書きを削除しますか？この操作は取り消せません。')) {
+                drafts = [];
+                localStorage.setItem('drafts', JSON.stringify(drafts));
+                loadDrafts();
+                showSuccess('🗑️ すべての下書きを削除しました');
+            }
+        }
+        
+        // 下書き編集
+        function editDraft(id) {
+            const draft = drafts.find(d => d.id === id);
+            if (draft) {
+                const newText = prompt('📝 投稿内容を編集してください:', draft.text);
+                if (newText && newText !== draft.text && newText.trim()) {
+                    drafts = drafts.map(d => 
+                        d.id === id ? {...d, text: newText.trim(), editedAt: new Date().toISOString()} : d
+                    );
+                    localStorage.setItem('drafts', JSON.stringify(drafts));
+                    loadDrafts();
+                    showSuccess('✏️ 下書きを更新しました');
+                }
+            }
+        }
+        
+        // 分析データ更新
+        function updateAnalytics() {
+            document.getElementById('totalDrafts').textContent = drafts.length;
+            document.getElementById('readyDrafts').textContent = drafts.filter(d => d.status === 'ready').length;
+            document.getElementById('postedCount').textContent = drafts.filter(d => d.status === 'posted').length;
+            
+            const postedDrafts = drafts.filter(d => d.status === 'posted').sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
+            document.getElementById('streakDays').textContent = calculateStreak(postedDrafts);
+        }
+        
+        // 連続投稿日数計算
+        function calculateStreak(postedDrafts) {
+            if (postedDrafts.length === 0) return 0;
+            
+            let streak = 0;
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+            
+            for (let draft of postedDrafts) {
+                const postedDate = new Date(draft.postedAt);
+                postedDate.setHours(0, 0, 0, 0);
+                
+                const diffDays = Math.floor((currentDate - postedDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === streak) {
+                    streak++;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                } else {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+        
+        // 通知有効化
+        function enableNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showSuccess('🔔 通知が有効になりました！明日の19時にリマインダーをお送りします。');
+                        scheduleNotifications();
+                    } else {
+                        showError('❌ 通知の許可が必要です。ブラウザの設定で通知を許可してください。');
+                    }
+                });
+            } else {
+                showError('❌ このブラウザは通知をサポートしていません');
+            }
+        }
+        
+        // 通知スケジュール
+        function scheduleNotifications() {
+            const now = new Date();
+            const tomorrow19 = new Date(now);
+            tomorrow19.setDate(tomorrow19.getDate() + 1);
+            tomorrow19.setHours(19, 0, 0, 0);
+            
+            const timeUntilNotification = tomorrow19.getTime() - now.getTime();
+            
+            if (timeUntilNotification > 0) {
+                setTimeout(() => {
+                    new Notification('🚀 投稿リマインダー', {
+                        body: '今日の業務ログから投稿を作成しませんか？',
+                        icon: '/favicon.ico',
+                        badge: '/favicon.ico'
+                    });
+                }, timeUntilNotification);
+            }
+        }
+        
+        // 生成状態管理
+        function setGeneratingState(generating) {
+            isGenerating = generating;
+            const buttons = document.querySelectorAll('#generator .btn');
+            
+            buttons.forEach(btn => {
+                if (generating) {
+                    btn.disabled = true;
+                    if (btn.textContent.includes('生成')) {
+                        btn.innerHTML = '<div class="loading-spinner"></div>AI生成中...';
+                    }
+                } else {
+                    btn.disabled = false;
+                    if (btn.textContent.includes('生成中')) {
+                        btn.textContent = '✨ 生成して下書き保存';
+                    }
+                }
+            });
+        }
+        
+        // ユーティリティ関数群
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffHours = Math.floor((now - date) / (1000 * 60 * 60));
+            
+            if (diffHours < 1) return '数分前';
+            if (diffHours < 24) return `${diffHours}時間前`;
+            if (diffHours < 48) return '昨日';
+            if (diffHours < 72) return '一昨日';
+            
+            return date.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+        }
+        
+        function getStatusLabel(status) {
+            const labels = {
+                'draft': '下書き',
+                'ready': '投稿準備完了',
+                'scheduled': 'スケジュール済み',
+                'posted': '投稿済み'
+            };
+            return labels[status] || '下書き';
+        }
+        
+        function getMoodLabel(mood) {
+            const labels = {
+                'neutral': '普通',
+                'frustrated': '困った',
+                'excited': '嬉しい',
+                'learning': '学び',
+                'challenging': '挑戦中',
+                'tired': '疲れた',
+                'productive': '生産的'
+            };
+            return labels[mood] || '普通';
+        }
+        
+        function getTypeLabel(type) {
+            const labels = {
+                'diary': '日記',
+                'tip': 'Tips',
+                'question': '質問',
+                'solution': '解決報告',
+                'opinion': '意見',
+                'motivation': 'モチベーション'
+            };
+            return labels[type] || '日記';
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccess('📋 投稿内容をクリップボードにコピーしました！Xで貼り付けて投稿してください。');
+            }).catch(err => {
+                showError('❌ コピーに失敗しました。手動で選択してコピーしてください。');
+            });
+        }
+        
+        function showSuccess(message) {
+            removeMessages();
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            document.querySelector('.tab-content.active').appendChild(successDiv);
+            
+            setTimeout(() => successDiv.remove(), 4000);
+        }
+        
+        function showError(message) {
+            removeMessages();
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            document.querySelector('.tab-content.active').appendChild(errorDiv);
+            
+            setTimeout(() => errorDiv.remove(), 6000);
+        }
+        
+        function removeMessages() {
+            document.querySelectorAll('.error-message, .success-message').forEach(el => el.remove());
+        }
+        
+        // AI関連の関数
+        function buildPrompt(workLog) {
+            const mood = document.getElementById('mood').value;
+            const postType = document.getElementById('postType').value;
+            
+            const moodEmoji = {
+                'neutral': '🤔',
+                'frustrated': '😅💦',
+                'excited': '✨🎉',
+                'learning': '📚💡',
+                'challenging': '💪🔥',
+                'tired': '😴💤',
+                'productive': '⚡🚀'
+            };
+            
+            return `あなたはエンジニア向けのX投稿を作成する専門家です。
+
+以下の業務ログを魅力的なX投稿に変換してください：
+
+【業務ログ】
+${workLog}
+
+【投稿設定】
+- 気分: ${mood} (絵文字: ${moodEmoji[mood]})
+- 投稿タイプ: ${postType}
+
+【投稿の要件】
+1. 280文字以内（日本語）
+2. エンジニアが共感できる内容
+3. 適切な絵文字を使用（2-4個程度）
+4. 関連するハッシュタグを3-5個含める
+5. 読者との交流を促す要素を含める
+6. 親しみやすく、読みやすい文体
+
+【良い投稿例】
+「useEffectの依存配列でハマった😅 無限ループに2時間も悩んだけど、ChatGPTに聞いたら即解決✨ AIツールをもっと早く使えばよかった💦 みんなは開発で詰まった時どうしてる？ #React #useEffect #AI活用 #エンジニア」
+
+投稿文のみを回答してください。説明や前置きは不要です。`;
+        }
+        
+        async function callOpenAI(apiKey, prompt) {
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: selectedModel,
+                        messages: [{
+                            role: 'user',
+                            content: prompt
+                        }],
+                        temperature: 0.7,
+                        max_tokens: 500
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    let errorMessage = 'API接続エラーが発生しました';
+                    
+                    if (errorData.error?.code === 'invalid_api_key') {
+                        errorMessage = 'APIキーが無効です。正しいAPIキーを入力してください。';
+                    } else if (errorData.error?.code === 'insufficient_quota') {
+                        errorMessage = 'API利用制限に達しました。OpenAI Platformで利用状況を確認してください。';
+                    } else if (errorData.error?.message) {
+                        errorMessage = errorData.error.message;
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+                
+                const data = await response.json();
+                return {
+                    success: true,
+                    content: data.choices[0].message.content.trim()
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+        
+        // 初期化
+        window.addEventListener('load', () => {
+            // 保存されたAPIキーの読み込み
+            const savedKey = localStorage.getItem('openai_api_key');
+            if (savedKey) {
+                document.getElementById('apiKey').value = savedKey;
+            }
+            
+            // APIキー保存
+            document.getElementById('apiKey').addEventListener('change', (e) => {
+                if (e.target.value) {
+                    localStorage.setItem('openai_api_key', e.target.value);
+                }
+            });
+            
+            // スケジュール項目のクリックイベント
+            document.querySelectorAll('.schedule-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.schedule-item').forEach(i => i.classList.remove('selected'));
+                    item.classList.add('selected');
+                    showSuccess(`📅 ${item.querySelector('h4').textContent}の時間帯を選択しました`);
+                });
+            });
+            
+            // 分析データの初期表示
+            updateAnalytics();
+            
+            console.log('🚀 AI投稿管理システムが正常に読み込まれました');
+        });
+        
+        // CSS アニメーション用のスケジュール項目スタイル
+        const scheduleItemStyle = `
+            .schedule-item {
+                background: white;
+                border: 2px solid #e1e8ed;
+                border-radius: 15px;
+                padding: 20px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            
+            .schedule-item:hover {
+                border-color: #1DA1F2;
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(29, 161, 242, 0.15);
+            }
+            
+            .schedule-item.selected {
+                border-color: #1DA1F2;
+                background: linear-gradient(135deg, #f0f8ff, #e8f4fd);
+            }
+            
+            .schedule-item h4 {
+                color: #333;
+                margin-bottom: 8px;
+            }
+            
+            .schedule-item p {
+                color: #1DA1F2;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+            
+            .schedule-item small {
+                color: #657786;
+                font-size: 12px;
+            }
+        `;
+        
+        // スタイルを動的に追加
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = scheduleItemStyle;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
