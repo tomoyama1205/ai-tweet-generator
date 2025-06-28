@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI投稿管理システム - エンジニア向け自動発信ツール</title>
+    <meta name="description" content="業務ログを魅力的なX投稿に自動変換。OpenAI連携でエンジニアの発信を効率化。">
+    <meta name="keywords" content="エンジニア,X,Twitter,投稿,AI,自動化,OpenAI">
+    
+    <!-- OGP設定 -->
+    <meta property="og:title" content="AI投稿管理システム">
+    <meta property="og:description" content="エンジニアの業務ログを魅力的なX投稿に自動変換">
+    <meta property="og:type" content="website">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1DA1F2, #1991DA);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .header-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .github-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .github-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #657786;
+        }
+        
+        .nav-tab.active {
+            background: white;
+            color: #1DA1F2;
+            border-bottom: 3px solid #1DA1F2;
+        }
+        
+        .nav-tab:hover:not(.active) {
+            background: #e8f4fd;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-left: 4px solid #1DA1F2;
+            padding-left: 15px;
+        }
+        
+        .api-config {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #ffeaa7;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .api-config::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23ffffff" opacity="0.1"/></svg>') repeat;
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .api-config h3 {
+            color: #b8860b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .first-time-notice {
+            background: #e8f4fd;
+            border-left: 4px solid #1DA1F2;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .first-time-notice h3 {
+            color: #1DA1F2;
+            margin-bottom: 10px;
+        }
+        
+        .setup-steps {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .setup-steps ol {
+            padding-left: 20px;
+        }
+        
+        .setup-steps li {
+            margin-bottom: 8px;
+        }
+        
+        .setup-steps a {
+            color: #1DA1F2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .setup-steps a:hover {
+            text-decoration: underline;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #1DA1F2;
+            box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .model-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .model-option {
+            border: 2px solid #e1e8ed;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .model-option:hover {
+            border-color: #1DA1F2;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(29, 161, 242, 0.15);
+        }
+        
+        .model-option.selected {
+            border-color: #1DA1F2;
+            background: linear-gradient(135deg, #f0f8ff, #e8f4fd);
+        }
+        
+        .model-option h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .model-option p {
+            color: #657786;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .cost-info {
+            background: #e8f5e8;
+            color: #2d5a2d;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1DA1F2, #1991DA);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(29, 161, 242, 0.3);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.6s;
+            transform: translate(-50%, -50%);
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn.secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+        
+        .btn.success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .btn.danger {
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .draft-item {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .draft-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(29, 161, 242, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .draft-item:hover {
+            border-color: #1DA1F2;
+            box-shadow: 0 10px 25px rgba(29, 161, 242, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .draft-item:hover::before {
+            left: 100%;
+        }
+        
+        .draft-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .draft-date {
+            color: #657786;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .draft-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .draft-status.ready {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            color: #2d5a2d;
+        }
+        
+        .draft-status.scheduled {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #b8860b;
+        }
+        
+        .draft-status.posted {
+            background: linear-gradient(135deg, #e1ecf4, #bee5eb);
+            color: #1d5373;
+        }
+        
+        .draft-status.draft {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #6c757d;
+        }
+        
+        .draft-content {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            border-left: 4px solid #1DA1F2;
+        }
+        
+        .draft-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #657786;
+            font-size: 14px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .draft-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .draft-actions .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, white, #f8f9fa);
+            border: 2px solid #e1e8ed;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(29, 161, 242, 0.15);
+            border-color: #1DA1F2;
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1DA1F2, #1991DA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #657786;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #657786;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .success-message, .error-message {
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            color: #2d5a2d;
+            border-color: #28a745;
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #ffe6e6, #f8d7da);
+            color: #d63031;
+            border-color: #dc3545;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #657786;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1DA1F2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e1e8ed;
+            color: #657786;
+        }
+        
+        .footer a {
+            color: #1DA1F2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px;
+                position: relative;
+            }
+            
+            .github-link {
+                position: static;
+                display: inline-block;
+                margin-top: 15px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                padding: 15px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .model-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .draft-actions {
+                justify-content: center;
+            }
+            
+            .draft-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        /* アニメーション効果 */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://github.com/yourusername/ai-tweet-generator" class="github-link" target="_blank">
+                🔗 GitHub
+            </a>
+            <h1>🚀 AI投稿管理システム</h1>
+            <p>エンジニアの業務ログを魅力的なX投稿に自動変換</p>
+            <div class="header-badges">
+                <div class="badge">🤖 OpenAI GPT連携</div>
+                <div class="badge">📋 下書き管理</div>
+                <div class="badge">⏰ スケジュール機能</div>
+                <div class="badge">💰 完全無料</div>
+            </div>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('generator')">📝 投稿生成</button>
+            <button class="nav-tab" onclick="switchTab('drafts')">📋 下書き管理</button>
+            <button class="nav-tab" onclick="switchTab('schedule')">⏰ スケジュール</button>
+            <button class="nav-tab" onclick="switchTab('analytics')">📊 分析</button>
+        </div>
+        
+        <!-- 投稿生成タブ -->
+        <div id="generator" class="tab-content active fade-in">
+            <!-- 初回利用者向け案内 -->
+            <div class="first-time-notice">
+                <h3>🎯 初回利用の方へ</h3>
+                <div class="setup-steps">
+                    <p><strong>このツールを使うには OpenAI API Key が必要です（月数百円程度）</strong></p>
+                    <ol>
+                        <li><a href="https://platform.openai.com" target="_blank">OpenAI Platform</a> でアカウント作成</li>
+                        <li>クレジットカードを登録（$5-10程度の予算設定推奨）</li>
+                        <li>API Keyを生成してください</li>
+                        <li>下記にAPI Keyを入力して開始！</li>
+                    </ol>
+                    <p><small>💡 APIキーはブラウザにのみ保存され、外部に送信されません</small></p>
+                </div>
+            </div>
+            
+            <!-- API設定セクション -->
+            <div class="section">
+                <div class="api-config">
+                    <h3>🔑 API設定</h3>
+                    <div class="input-group">
+                        <label for="apiKey">OpenAI API Key</label>
+                        <input type="password" id="apiKey" placeholder="sk-proj-..." />
+                        <small style="color: #b8860b; font-weight: 500;">安全：APIキーはお使いのブラウザにのみ保存されます</small>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>AIモデル選択</label>
+                        <div class="model-selector">
+                            <div class="model-option selected" data-model="gpt-3.5-turbo">
+                                <h4>GPT-3.5 Turbo</h4>
+                                <p>高速・低コスト・実用的</p>
+                                <div class="cost-info">約0.07円/回</div>
+                            </div>
+                            <div class="model-option" data-model="gpt-4">
+                                <h4>GPT-4</h4>
+                                <p>最高品質・高精度</p>
+                                <div class="cost-info" style="background: #fff3cd; color: #b8860b;">約0.7円/回</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- メイン入力セクション -->
+            <div class="section">
+                <h2>📝 今日の業務ログを入力</h2>
+                
+                <div class="input-group">
+                    <label for="workLog">作業内容・感じたこと・課題など</label>
+                    <textarea id="workLog" placeholder="例：今日はReactのuseEffectで思わぬ落とし穴にハマった。依存配列の設定ミスで無限ループが発生...2時間悩んだ末ChatGPTで解決方法を調べたら、すぐに原因が判明。AIをもっと早く使えばよかった💦"></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="input-group">
+                        <label for="mood">今日の気分</label>
+                        <select id="mood">
+                            <option value="neutral">普通</option>
+                            <option value="frustrated">困った・イライラ</option>
+                            <option value="excited">解決した・嬉しい</option>
+                            <option value="learning">学びがあった</option>
+                            <option value="challenging">挑戦中</option>
+                            <option value="tired">疲れた</option>
+                            <option value="productive">生産的だった</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="postType">投稿タイプ</label>
+                        <select id="postType">
+                            <option value="diary">日記・つぶやき</option>
+                            <option value="tip">技術Tips・学び</option>
+                            <option value="question">質問・相談</option>
+                            <option value="solution">解決報告</option>
+                            <option value="opinion">意見・考察</option>
+                            <option value="motivation">モチベーション</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 25px;">
+                    <button class="btn" onclick="generateAndSave()">
+                        ✨ 生成して下書き保存
+                    </button>
+                    <button class="btn secondary" onclick="generatePreview()">
+                        👀 プレビューのみ
+                    </button>
+                    <button class="btn success" onclick="quickPost()">
+                        ⚡ 即座に投稿準備
+                    </button>
+                </div>
+            </div>
+            
+            <!-- プレビューエリア -->
+            <div id="previewArea" style="display: none;">
+                <div class="section">
+                    <h2>👀 生成プレビュー</h2>
+                    <div id="previewContent"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 下書き管理タブ -->
+        <div id="drafts" class="tab-content">
+            <div class="section">
+                <h2>📋 下書き一覧</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <button class="btn secondary" onclick="loadDrafts()">🔄 更新</button>
+                        <button class="btn danger" onclick="clearAllDrafts()">🗑️ 全削除</button>
+                    </div>
+                    <div style="color: #657786; font-weight: 600;">
+                        📊 <span id="draftCount">0</span>件の下書き
+                    </div>
+                </div>
+                
+                <div id="draftsList">
+                    <!-- 下書きリストがここに表示される -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- スケジュールタブ -->
+        <div id="schedule" class="tab-content">
+            <div class="section">
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border: 2px solid #e1e8ed; border-radius: 20px; padding: 30px; margin-bottom: 25px;">
+                    <h3 style="color: #1DA1F2; margin-bottom: 15px;">⏰ おすすめ投稿時間</h3>
+                    <p style="color: #657786; margin-bottom: 25px;">エンジニア界隈で反応が良い時間帯をピックアップ</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
